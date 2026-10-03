@@ -1,0 +1,66 @@
+{
+  "kind": "static",
+  "version": 1,
+  "algorithm": "random_forest",
+  "trained_at": "2026-10-03T15:00:19",
+  "n_train": 1501,
+  "n_val": 377,
+  "n_test": 622,
+  "val_roc_auc": 0.706,
+  "metrics": {
+    "accuracy": 0.72,
+    "precision": 0.634,
+    "recall": 0.296,
+    "f1": 0.404,
+    "roc_auc": 0.747,
+    "false_positive_rate": 0.08,
+    "false_negative_rate": 0.704,
+    "confusion_matrix": [
+      [
+        389,
+        34
+      ],
+      [
+        140,
+        59
+      ]
+    ]
+  },
+  "feature_importance": {
+    "slope": 0.21560308684486054,
+    "ruggedness": 0.16630202050762544,
+    "ndvi": 0.12493415119643768,
+    "ls_density": 0.10273265556850886,
+    "dist_road_km": 0.09498287519168894,
+    "aspect": 0.08575700044743469,
+    "elevation": 0.08157646177831311,
+    "curvature": 0.07808825316795262,
+    "geology_code": 0.026126115082218442,
+    "soil_code": 0.023897380214959765
+  },
+  "feature_means": {
+    "elevation": 1653.7507387884905,
+    "slope": 18.241502156576583,
+    "aspect": 178.4560634801157,
+    "curvature": 0.015906720603688508,
+    "ruggedness": 0.3726451791849896,
+    "soil_code": 1.47,
+    "geology_code": 1.5028,
+    "ndvi": 0.6010026309272712,
+    "dist_road_km": 1.9810742877592113,
+    "ls_density": 0.09979560513933407
+  },
+  "feature_stds": {
+    "elevation": 903.0010904469725,
+    "slope": 10.27523630366619,
+    "aspect": 105.4797263911488,
+    "curvature": 0.9862654342968705,
+    "ruggedness": 0.24730873296778935,
+    "soil_code": 1.1103121710793316,
+    "geology_code": 1.1228964861497444,
+    "ndvi": 0.17946062193290366,
+    "dist_road_km": 1.9882777325585386,
+    "ls_density": 0.1006290087416308
+  },
+  "note": "Metrics from SYNTHETIC demo data unless trained on validated records; not scientific validation."
+}

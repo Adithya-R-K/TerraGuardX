@@ -1,0 +1,72 @@
+{
+  "kind": "dynamic",
+  "version": 1,
+  "algorithm": "random_forest",
+  "trained_at": "2026-10-03T15:00:19",
+  "n_train": 1780,
+  "n_val": 460,
+  "n_test": 760,
+  "val_roc_auc": 0.745,
+  "metrics": {
+    "accuracy": 0.757,
+    "precision": 0.704,
+    "recall": 0.526,
+    "f1": 0.602,
+    "roc_auc": 0.786,
+    "false_positive_rate": 0.119,
+    "false_negative_rate": 0.474,
+    "confusion_matrix": [
+      [
+        435,
+        59
+      ],
+      [
+        126,
+        140
+      ]
+    ]
+  },
+  "feature_importance": {
+    "rainfall_7d": 0.13194204812861224,
+    "susceptibility": 0.11026269842574357,
+    "rainfall_24h": 0.09812854720521501,
+    "antecedent_rainfall": 0.08629180957363909,
+    "rainfall_48h": 0.08625729441261913,
+    "slope": 0.08571457836341606,
+    "rainfall_72h": 0.07795422314625643,
+    "rainfall_12h": 0.06978740883648636,
+    "rainfall_6h": 0.06683009577608792,
+    "rainfall_intensity": 0.06571445842459349,
+    "rainfall_1h": 0.06171009713200855,
+    "rainfall_3h": 0.05940674057532206
+  },
+  "feature_means": {
+    "rainfall_1h": 7.994618396099967,
+    "rainfall_3h": 18.171060487418956,
+    "rainfall_6h": 27.315304111511555,
+    "rainfall_12h": 37.14720677924539,
+    "rainfall_24h": 50.600398854459975,
+    "rainfall_48h": 70.3857188927305,
+    "rainfall_72h": 84.56247999009186,
+    "rainfall_7d": 164.61918898133715,
+    "rainfall_intensity": 4.552550685251925,
+    "antecedent_rainfall": 80.0567089912453,
+    "slope": 30.860400831911704,
+    "susceptibility": 50.04238203149581
+  },
+  "feature_stds": {
+    "rainfall_1h": 7.5274161101487875,
+    "rainfall_3h": 16.3746044153477,
+    "rainfall_6h": 21.914482096023946,
+    "rainfall_12h": 28.22240528952486,
+    "rainfall_24h": 36.45724396085826,
+    "rainfall_48h": 52.797621386056115,
+    "rainfall_72h": 64.7248402197068,
+    "rainfall_7d": 84.19390911643826,
+    "rainfall_intensity": 3.6524136826706575,
+    "antecedent_rainfall": 56.095858878734774,
+    "slope": 16.86335399281588,
+    "susceptibility": 28.489219646652987
+  },
+  "note": "Metrics from SYNTHETIC demo data unless trained on validated records; not scientific validation."
+}

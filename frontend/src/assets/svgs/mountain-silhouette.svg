@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300" fill="none" opacity="0.09">
+  <defs>
+    <linearGradient id="mtnGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#07111F" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+  <path d="M0 300 L0 180 L120 130 L220 170 L340 90 L480 210 L620 60 L760 180 L900 110 L1040 190 L1150 140 L1200 170 L1200 300 Z" fill="url(#mtnGrad)" stroke="#38BDF8" stroke-width="1" />
+  <path d="M0 300 L0 230 L160 190 L300 240 L450 150 L600 220 L750 130 L920 230 L1080 160 L1200 210 L1200 300 Z" fill="#0B1728" fill-opacity="0.5" stroke="#3B82F6" stroke-width="0.8" stroke-dasharray="2 2" />
+</svg>
