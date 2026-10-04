@@ -37,7 +37,7 @@ export const Sidebar: React.FC<{ isCollapsed?: boolean; onCloseMobile?: () => vo
   isCollapsed = false,
   onCloseMobile,
 }) => {
-  const { activePage, setActivePage, role, username, logout, alerts } = useApp();
+  const { activePage, setActivePage, role, username, logout, alerts, dataMode } = useApp();
 
   const activeAlertCount = alerts.filter((a) => !['RESOLVED'].includes(a.status)).length;
 
@@ -267,7 +267,7 @@ export const Sidebar: React.FC<{ isCollapsed?: boolean; onCloseMobile?: () => vo
       >
         {!isCollapsed && (
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <DataModeBadge mode="DEMO" variant="compact" />
+            <DataModeBadge mode={dataMode} variant="compact" />
             <span
               style={{
                 fontSize: '10.5px',

@@ -133,6 +133,7 @@ export interface DataHealthStatus {
   historical_inventory: string;
   exposure: string;
   requested_mode: string;
+  live_sync?: boolean;
   warnings: string[];
 }
 

@@ -6,7 +6,7 @@ import { colors } from '../styles/designTokens';
 export const LoginPage: React.FC = () => {
   const { login, isLoading, message } = useApp();
   const [username, setUsername] = useState<string>('admin');
-  const [password, setPassword] = useState<string>('admin123');
+  const [password, setPassword] = useState<string>('Sasikarthi@123');
   const [error, setError] = useState<string>('');
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -307,7 +307,7 @@ export const LoginPage: React.FC = () => {
             <button
               type="button"
               className="btn-secondary"
-              onClick={() => setDemoAccount('admin', 'admin123')}
+              onClick={() => setDemoAccount('admin', 'Sasikarthi@123')}
               style={{
                 fontSize: '11px',
                 padding: '6px 4px',
@@ -324,7 +324,7 @@ export const LoginPage: React.FC = () => {
             <button
               type="button"
               className="btn-secondary"
-              onClick={() => setDemoAccount('authority', 'authority123')}
+              onClick={() => setDemoAccount('authority', 'Sasikarthi@1234')}
               style={{
                 fontSize: '11px',
                 padding: '6px 4px',
@@ -341,7 +341,7 @@ export const LoginPage: React.FC = () => {
             <button
               type="button"
               className="btn-secondary"
-              onClick={() => setDemoAccount('viewer', 'viewer123')}
+              onClick={() => setDemoAccount('viewer', 'Sasikarthi@12345')}
               style={{
                 fontSize: '11px',
                 padding: '6px 4px',

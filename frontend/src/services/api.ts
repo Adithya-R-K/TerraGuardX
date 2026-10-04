@@ -162,11 +162,30 @@ class ApiService {
   }
 
   // Pipeline Simulation
-  public async runSimulation(): Promise<{ run_id: string; data_mode: string; zones: Zone[] }> {
+  public async runSimulation(): Promise<{ run_id: string; data_mode: string; zones: Zone[]; meta?: any }> {
     return this.request('/api/prediction', {
       method: 'POST',
+    });
+  }
+
+  public async runPrediction(): Promise<{ run_id: string; data_mode: string; zones: Zone[]; meta?: any }> {
+    return this.runSimulation();
+  }
+
+  // Real-Time Sync & Mode
+  public async syncRealtime(): Promise<{ status: string; data_mode: string; records: any; meta: any }> {
+    return this.request('/api/realtime/sync', {
+      method: 'POST',
+    });
+  }
+
+  public async setDataMode(mode: 'live' | 'demo'): Promise<{ active_mode: string }> {
+    return this.request('/api/settings/mode', {
+      method: 'POST',
+      body: JSON.stringify({ mode }),
     });
   }
 }
 
 export const api = new ApiService();
+

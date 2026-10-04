@@ -17,9 +17,10 @@ import {
 } from 'lucide-react';
 
 export const SatellitePage: React.FC = () => {
-  const { satelliteObservations, zones, setSelectedZone } = useApp();
+  const { satelliteObservations, zones, setSelectedZone, dataMode } = useApp();
   const [search, setSearch] = useState<string>('');
   const [selectedObsZone, setSelectedObsZone] = useState<string | null>(null);
+  const isLive = dataMode === 'LIVE';
 
   const enrichedObservations = satelliteObservations.map((obs) => {
     const matchingZone = zones.find((z) => z.zone_id === obs.zone_id);
@@ -61,21 +62,24 @@ export const SatellitePage: React.FC = () => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          backgroundColor: colors.demo.bg,
-          border: `1px solid ${colors.demo.border}`,
+          backgroundColor: isLive ? 'rgba(34, 197, 94, 0.1)' : colors.demo.bg,
+          border: isLive ? '1px solid rgba(34, 197, 94, 0.3)' : `1px solid ${colors.demo.border}`,
           borderRadius: '8px',
           padding: '10px 16px',
-          color: colors.demo.text,
+          color: isLive ? '#86EFAC' : colors.demo.text,
           fontSize: '12px',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <AlertTriangle size={16} />
+          {isLive ? <Radio size={16} className="pulse-dot" style={{ color: '#22C55E' }} /> : <AlertTriangle size={16} />}
           <span>
-            <strong>SENTINEL-1 SAR INTELLIGENCE:</strong> InSAR Line-of-Sight deformation & coherence loss derived from synthetic DEMO radar feeds.
+            <strong>SENTINEL-1 SAR INTELLIGENCE:</strong>{' '}
+            {isLive
+              ? 'Real-time InSAR Line-of-Sight deformation & coherence loss tracking active across 48 sectors.'
+              : 'InSAR Line-of-Sight deformation & coherence loss derived from synthetic DEMO radar feeds.'}
           </span>
         </div>
-        <DataModeBadge mode="DEMO" variant="compact" />
+        <DataModeBadge mode={dataMode} variant="compact" />
       </div>
 
       {/* Satellite Telemetry Summary Cards */}

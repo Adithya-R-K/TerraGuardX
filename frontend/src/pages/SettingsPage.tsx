@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { colors } from '../styles/designTokens';
 import {
@@ -8,13 +8,43 @@ import {
   Radio,
   UserCheck,
   Server,
-  KeyRound,
-  Bell,
-  Cpu,
+  Database,
+  RefreshCw,
+  CheckCircle2,
+  CloudRain,
+  Satellite,
+  Globe2,
+  Loader2,
+  Zap,
 } from 'lucide-react';
 
 export const SettingsPage: React.FC = () => {
-  const { role, username } = useApp();
+  const { role, username, dataMode, toggleDataMode, syncRealtime, isLoading } = useApp();
+  const [isSyncing, setIsSyncing] = useState<boolean>(false);
+  const [syncSuccess, setSyncSuccess] = useState<string>('');
+
+  const isLive = dataMode === 'LIVE';
+
+  const handleSync = async () => {
+    setIsSyncing(true);
+    setSyncSuccess('');
+    try {
+      await syncRealtime();
+      setSyncSuccess('Real-time meteorological & Sentinel-1 SAR telemetry synchronized successfully.');
+    } catch (err: any) {
+      console.error(err);
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
+  const handleModeChange = async (newMode: 'live' | 'demo') => {
+    try {
+      await toggleDataMode(newMode);
+    } catch (err: any) {
+      console.error(err);
+    }
+  };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -25,30 +55,264 @@ export const SettingsPage: React.FC = () => {
           padding: '18px 20px',
           display: 'flex',
           alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
           gap: '12px',
           backgroundColor: 'rgba(11, 23, 40, 0.6)',
         }}
       >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div
+            style={{
+              width: '40px',
+              height: '40px',
+              borderRadius: '8px',
+              backgroundColor: 'rgba(59, 130, 246, 0.15)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: colors.brand.primary,
+            }}
+          >
+            <Settings2 size={22} />
+          </div>
+          <div>
+            <div style={{ fontSize: '15px', fontWeight: 800, color: '#FFFFFF' }}>
+              SYSTEM CONFIGURATION & DATASET CONNECTOR
+            </div>
+            <div style={{ fontSize: '11.5px', color: colors.text.secondary }}>
+              Manage real-time dataset feeds, risk fusion weights, emergency broadcast rules, and role policies
+            </div>
+          </div>
+        </div>
+
+        {/* Live / Demo Mode Badge */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{ fontSize: '11px', color: colors.text.muted }}>CURRENT MODE:</span>
+          <span
+            style={{
+              backgroundColor: isLive ? 'rgba(34, 197, 94, 0.15)' : colors.demo.bg,
+              color: isLive ? '#22C55E' : colors.demo.text,
+              border: isLive ? '1px solid rgba(34, 197, 94, 0.4)' : `1px solid ${colors.demo.border}`,
+              padding: '4px 10px',
+              borderRadius: '6px',
+              fontWeight: 700,
+              fontSize: '11.5px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              fontFamily: 'var(--font-mono)',
+            }}
+          >
+            <span
+              style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                backgroundColor: isLive ? '#22C55E' : colors.demo.text,
+              }}
+              className={isLive ? 'pulse-dot' : ''}
+            />
+            {dataMode} STREAM
+          </span>
+        </div>
+      </div>
+
+      {/* Real-time Dataset Connection Manager Card */}
+      <div
+        className="card-elevated animate-fade-in"
+        style={{
+          padding: '22px 24px',
+          border: `1px solid ${isLive ? colors.brand.primary : colors.bg.border}`,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '16px',
+          backgroundColor: 'rgba(16, 31, 51, 0.85)',
+          boxShadow: isLive ? '0 10px 30px rgba(59, 130, 246, 0.15)' : undefined,
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <Database size={20} style={{ color: colors.brand.secondary }} />
+            <div>
+              <div style={{ fontSize: '14px', fontWeight: 800, color: '#FFFFFF' }}>
+                REAL-TIME DATASET INGESTION & SENSOR FEEDS
+              </div>
+              <div style={{ fontSize: '11.5px', color: colors.text.secondary }}>
+                Directly connected to Open-Meteo precipitation, NASA GPM & Copernicus Sentinel-1 InSAR STAC APIs
+              </div>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {/* Mode Switcher Buttons */}
+            {role === 'ADMIN' && (
+              <div
+                style={{
+                  display: 'flex',
+                  backgroundColor: 'rgba(11, 23, 40, 0.8)',
+                  borderRadius: '6px',
+                  padding: '3px',
+                  border: `1px solid ${colors.bg.border}`,
+                  gap: '2px',
+                }}
+              >
+                <button
+                  type="button"
+                  onClick={() => handleModeChange('live')}
+                  style={{
+                    padding: '5px 12px',
+                    borderRadius: '4px',
+                    border: 'none',
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    backgroundColor: isLive ? '#22C55E' : 'transparent',
+                    color: isLive ? '#07111F' : colors.text.secondary,
+                    transition: 'all 0.15s',
+                  }}
+                >
+                  LIVE DATA
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleModeChange('demo')}
+                  style={{
+                    padding: '5px 12px',
+                    borderRadius: '4px',
+                    border: 'none',
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    backgroundColor: !isLive ? colors.demo.border : 'transparent',
+                    color: !isLive ? colors.demo.text : colors.text.secondary,
+                    transition: 'all 0.15s',
+                  }}
+                >
+                  DEMO MODE
+                </button>
+              </div>
+            )}
+
+            {/* Sync Now Button */}
+            <button
+              onClick={handleSync}
+              disabled={isSyncing || isLoading}
+              className="btn-primary"
+              style={{
+                height: '36px',
+                padding: '0 14px',
+                fontSize: '12px',
+                fontWeight: 700,
+                background: 'linear-gradient(135deg, #2563EB, #1D4ED8)',
+              }}
+            >
+              {isSyncing ? <Loader2 size={14} className="radar-sweep" /> : <RefreshCw size={14} />}
+              <span>{isSyncing ? 'FETCHING LIVE FEEDS…' : 'SYNC REAL-TIME DATASET'}</span>
+            </button>
+          </div>
+        </div>
+
+        {syncSuccess && (
+          <div
+            style={{
+              padding: '10px 14px',
+              borderRadius: '6px',
+              backgroundColor: 'rgba(34, 197, 94, 0.15)',
+              border: '1px solid rgba(34, 197, 94, 0.4)',
+              color: '#22C55E',
+              fontSize: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+            }}
+          >
+            <CheckCircle2 size={16} />
+            <span>{syncSuccess}</span>
+          </div>
+        )}
+
+        {/* Live Adapters Grid */}
         <div
           style={{
-            width: '40px',
-            height: '40px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(59, 130, 246, 0.15)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: colors.brand.primary,
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+            gap: '10px',
           }}
         >
-          <Settings2 size={22} />
-        </div>
-        <div>
-          <div style={{ fontSize: '15px', fontWeight: 800, color: '#FFFFFF' }}>
-            SYSTEM CONFIGURATION & DECISION PARAMETERS
+          <div
+            style={{
+              backgroundColor: 'rgba(11, 23, 40, 0.6)',
+              padding: '12px 14px',
+              borderRadius: '8px',
+              border: '1px solid var(--border-subtle)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '6px',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <CloudRain size={14} style={{ color: colors.brand.secondary }} />
+                <span style={{ fontSize: '12px', fontWeight: 700, color: '#FFFFFF' }}>Open-Meteo GPM Rain</span>
+              </div>
+              <span className="font-mono" style={{ fontSize: '10px', color: '#22C55E', fontWeight: 700 }}>
+                ● CONNECTED
+              </span>
+            </div>
+            <div style={{ fontSize: '11px', color: colors.text.secondary }}>
+              ECMWF IFS / GFS 72h hourly precipitation for all 48 zone coordinates in NER India.
+            </div>
           </div>
-          <div style={{ fontSize: '11.5px', color: colors.text.secondary }}>
-            Manage risk fusion weights, emergency broadcast rules, API credentials, and role policies
+
+          <div
+            style={{
+              backgroundColor: 'rgba(11, 23, 40, 0.6)',
+              padding: '12px 14px',
+              borderRadius: '8px',
+              border: '1px solid var(--border-subtle)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '6px',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Satellite size={14} style={{ color: '#F472B6' }} />
+                <span style={{ fontSize: '12px', fontWeight: 700, color: '#FFFFFF' }}>Copernicus Sentinel-1</span>
+              </div>
+              <span className="font-mono" style={{ fontSize: '10px', color: '#22C55E', fontWeight: 700 }}>
+                ● STAC ACTIVE
+              </span>
+            </div>
+            <div style={{ fontSize: '11px', color: colors.text.secondary }}>
+              C-SAR ascending/descending pass orbit tracks, backscatter, & InSAR phase deformation.
+            </div>
+          </div>
+
+          <div
+            style={{
+              backgroundColor: 'rgba(11, 23, 40, 0.6)',
+              padding: '12px 14px',
+              borderRadius: '8px',
+              border: '1px solid var(--border-subtle)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '6px',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Globe2 size={14} style={{ color: '#38BDF8' }} />
+                <span style={{ fontSize: '12px', fontWeight: 700, color: '#FFFFFF' }}>OpenStreetMap GIS</span>
+              </div>
+              <span className="font-mono" style={{ fontSize: '10px', color: '#22C55E', fontWeight: 700 }}>
+                ● OVERPASS API
+              </span>
+            </div>
+            <div style={{ fontSize: '11px', color: colors.text.secondary }}>
+              High-relief road transport network, critical infrastructure & village exposure nodes.
+            </div>
           </div>
         </div>
       </div>
@@ -93,7 +357,7 @@ export const SettingsPage: React.FC = () => {
                 <div style={{ width: '40%', height: '100%', backgroundColor: '#60A5FA' }} />
               </div>
               <div style={{ fontSize: '10.5px', color: colors.text.muted, marginTop: '2px' }}>
-                GPM 24h/72h rainfall, intensity and antecedent moisture saturation
+                Live GPM 24h/72h rainfall, intensity and antecedent moisture saturation
               </div>
             </div>
 
@@ -202,15 +466,17 @@ export const SettingsPage: React.FC = () => {
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Server size={16} style={{ color: colors.brand.primary }} />
             <span style={{ fontSize: '13px', fontWeight: 700, color: '#FFFFFF' }}>
-              BACKEND ENGINE & PERSISTENCE
+              BACKEND ENGINE & REAL-TIME ADAPTERS
             </span>
           </div>
 
           <table style={{ width: '100%', fontSize: '11.5px', borderCollapse: 'collapse' }}>
             <tbody>
               {[
-                ['API Endpoint', 'http://localhost:8000'],
-                ['Database', 'SQLite (terraguardx.db) / PostGIS ready'],
+                ['API Base', 'http://localhost:8000'],
+                ['Real-Time Precipitation', 'Open-Meteo ECMWF / NASA GPM'],
+                ['Satellite Telemetry', 'Copernicus Sentinel-1 InSAR STAC'],
+                ['Database', 'SQLite (terraguardx.db) / PostGIS'],
                 ['Auth Framework', 'JWT Bearer (HS256)'],
                 ['Inference Engine', 'scikit-learn + XGBoost Pipeline'],
                 ['SMS Gateway', 'Twilio / MockSMSProvider fallback'],
