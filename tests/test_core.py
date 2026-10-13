@@ -52,3 +52,5 @@ def test_api_flow():
     assert c.post("/api/feedback", headers=tok("authority", "authority123"), json={"zone_id": "Z01", "actual_event": "CONFIRMED_LANDSLIDE"}).status_code == 200
     r = c.post("/api/admin/retrain", headers=ad).json(); assert r["feedback_records_used"] == 1 and r["version"] >= 2
     assert "rainfall" in c.get("/api/data-status", headers=vw).json()
+    insights = c.get("/api/analytics/insights", headers=vw).json()
+    assert "eda" in insights and "benchmarks" in insights and "business_insights" in insights

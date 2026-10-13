@@ -10,7 +10,7 @@ import {
   FieldFeedbackSubmission
 } from '../types';
 
-const API_BASE = (import.meta as any).env.VITE_API || 'http://localhost:8000';
+const API_BASE = (import.meta as any).env.VITE_API || '';
 
 class ApiService {
   private token: string = '';
@@ -147,6 +147,10 @@ class ApiService {
 
   public async getModelFeatures(): Promise<{ static: Record<string, number>; dynamic: Record<string, number> }> {
     return this.request('/api/model/features');
+  }
+
+  public async getModelInsights(): Promise<any> {
+    return this.request('/api/analytics/insights');
   }
 
   // Data Status

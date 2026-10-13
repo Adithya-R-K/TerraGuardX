@@ -9,11 +9,9 @@ from pathlib import Path
 import httpx
 import numpy as np
 import pandas as pd
-from .config import DEMO_DIR, ROOT
+from .config import DEMO_DIR, LIVE_DIR, ROOT
 
 log = logging.getLogger("terraguardx.adapters")
-LIVE_DIR = ROOT / "datasets" / "live"
-LIVE_DIR.mkdir(parents=True, exist_ok=True)
 
 
 class RealTimePrecipitationAdapter:

@@ -5,18 +5,38 @@ import jwt
 import pandas as pd
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel
 from . import models
 from .adapters import live_manager, LIVE_DIR
 from .alerts import get_provider
+from .analytics import get_full_analytics_payload
 from .config import DATA_MODE, DEMO_DIR, DISCLAIMER, JWT_SECRET, USERS
 from .db import Alert, FieldFeedback, ModelVersion, RiskPrediction, Session, init_db
 from .pipeline import run_simulation
 
 logging.basicConfig(level=logging.INFO)
-app = FastAPI(title="TerraGuardX API", description=DISCLAIMER, version="0.2.0")
+app = FastAPI(
+    title="TerraGuardX API",
+    description=DISCLAIMER,
+    version="0.2.0",
+    docs_url="/api/docs",
+    openapi_url="/api/openapi.json"
+)
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
+
+
+@app.get("/docs", include_in_schema=False)
+def docs_redirect():
+    return RedirectResponse(url="/api/docs")
+
+
+@app.get("/openapi.json", include_in_schema=False)
+def openapi_redirect():
+    return RedirectResponse(url="/api/openapi.json")
+
+
 bearer = HTTPBearer(auto_error=False)
 init_db()
 
@@ -235,6 +255,12 @@ def perf(_: dict = Depends(ANY)):
 @app.get("/api/model/features", tags=["model"])
 def feats(_: dict = Depends(ANY)):
     return {k: models.load(k)["meta"]["feature_importance"] for k in ("static", "dynamic")}
+
+
+@app.get("/api/analytics/insights", tags=["analytics"])
+def analytics_insights(_: dict = Depends(ANY)):
+    """Exploratory Data Analysis, model benchmark comparisons, and business insights."""
+    return get_full_analytics_payload()
 
 
 @app.get("/api/data-status", tags=["system"])

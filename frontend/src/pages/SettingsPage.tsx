@@ -473,7 +473,7 @@ export const SettingsPage: React.FC = () => {
           <table style={{ width: '100%', fontSize: '11.5px', borderCollapse: 'collapse' }}>
             <tbody>
               {[
-                ['API Base', 'http://localhost:8000'],
+                ['API Base', (import.meta as any).env.VITE_API || (typeof window !== 'undefined' ? `${window.location.origin}/api` : '/api')],
                 ['Real-Time Precipitation', 'Open-Meteo ECMWF / NASA GPM'],
                 ['Satellite Telemetry', 'Copernicus Sentinel-1 InSAR STAC'],
                 ['Database', 'SQLite (terraguardx.db) / PostGIS'],
