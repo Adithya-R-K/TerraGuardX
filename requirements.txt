@@ -1,13 +1,10 @@
 fastapi
-uvicorn[standard]
+uvicorn
 sqlalchemy
-psycopg2-binary
 pydantic
 pandas
 numpy
 scikit-learn
-xgboost
 joblib
 pyjwt
 httpx
-pytest

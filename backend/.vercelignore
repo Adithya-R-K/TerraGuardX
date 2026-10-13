@@ -1,0 +1,16 @@
+# Tests and CI
+tests/
+.pytest_cache/
+
+# Virtual environments and caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+
+# Docker and configs
+Dockerfile
+.dockerignore

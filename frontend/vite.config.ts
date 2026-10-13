@@ -12,4 +12,16 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ["react", "react-dom"],
+          charts: ["recharts"],
+          maps: ["leaflet", "react-leaflet"],
+          icons: ["lucide-react"],
+        },
+      },
+    },
+  },
 });
